@@ -19,21 +19,21 @@
                         <form v-on:submit.prevent=''>
                             <div class="form-check form-switch">
                                 <div>
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" v-bind='{id: order.name + 1, checked: order.status == "Trabajando" ? "checked" : "" }' />
-                                    <label class="form-check-label" v-bind:for="order.name + index" >
+                                    <input class="form-check-input" type="radio" v-bind='{id: order.name + 0, name: "flexRadioDefault"+index, checked: order.status == "Trabajando" ? "checked" : "", class: order.status == "Trabajando" ? "bg-warning" : "" }' />
+                                    <label class="form-check-label" v-bind:for="order.name + 0" >
                                         Trabajando
                                     </label>
                                 </div>
                                 <div>
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" v-bind='{id: order.name + 2, checked: order.status == "Entregado" ? "checked" : "" }' />
-                                    <label class="form-check-label" v-bind:for="order.name + index" >
-                                        Entregado
+                                    <input class="form-check-input" type="radio" v-bind='{id: order.name + 1, name: "flexRadioDefault"+index, checked: order.status == "Retrasado" ? "checked" : "", class: order.status == "Retrasado" ? "bg-danger" : "" }' />
+                                    <label class="form-check-label" v-bind:for="order.name + 1" >
+                                        Retrasado
                                     </label>
                                 </div>
                                 <div>
-                                    <input class="form-check-input" type="radio" name="flexRadioDefault" v-bind='{id: order.name + 3, checked: order.status == "Retrasado" ? "checked" : "" }' />
-                                    <label class="form-check-label" v-bind:for="order.name + index" >
-                                        Retrasado
+                                    <input class="form-check-input" type="radio" v-bind='{id: order.name + 2, name: "flexRadioDefault"+index, checked: order.status == "Entregado" ? "checked" : "", class: order.status == "Entregado" ? "bg-success" : "" }' />
+                                    <label class="form-check-label" v-bind:for="order.name + 2" >
+                                        Entregado
                                     </label>
                                 </div>
                             </div>

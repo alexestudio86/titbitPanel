@@ -1,0 +1,18 @@
+{
+  "projects": {
+    "default": "comandas-3a9bd",
+    "panel": "comandas-3a9bd"
+  },
+  "targets": {
+    "comandas-3a9bd": {
+      "hosting": {
+        "panel-titbit": [
+          "public"
+        ],
+        "panel": [
+          "panel-titbit"
+        ]
+      }
+    }
+  }
+}

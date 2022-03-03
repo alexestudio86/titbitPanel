@@ -5,7 +5,7 @@ import { createStore } from 'vuex'
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import firebaseConfig from '../config.js'
-import { getFirestore, collection, getDocs, query, orderBy } from 'firebase/firestore/lite';
+import { getFirestore, collection, getDocs, query, orderBy, onSnapshot } from 'firebase/firestore';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -25,12 +25,21 @@ export default new Vuex.Store({
   },
   actions: {
     getOrders: async function ({ commit }) {
-    const db = getFirestore(app);
+      const db = getFirestore(app);
       try{
-        const queryOrders = query( collection(db, 'orders'), orderBy('date', 'desc') );
+        const queryOrders = query(collection(db, 'orders'), orderBy('date', 'desc'));
+        /*
         const ordersSnapshot = await getDocs(queryOrders);
-        const orderList = ordersSnapshot.docs.map(doc => doc.data());
+        const orderList = ordersSnapshot.docs.map( doc => doc.data() );
         commit('allOrders', orderList)
+        */
+       const getOrders = await onSnapshot(queryOrders, (querySnapshot) => {
+        const orderList = [];
+        querySnapshot.forEach( (doc) => {
+          orderList.push( doc.data() )
+        });
+        commit('allOrders', orderList)
+       })
       }catch(error){
         console.log(error)
       }

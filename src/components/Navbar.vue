@@ -5,7 +5,7 @@
         <img alt="Logo Morita Creativa" src="../assets/logo-morita_creativa.jpg" width="70" height='54' />
       </router-link>
       <div class="d-flex">
-        <span class='text-uppercase'>Titbit</span>
+        <img alt="Logo Titbit" src="../assets/logo-titbit.png" width="70" height='54' />
       </div>
     </div>
   </nav>
