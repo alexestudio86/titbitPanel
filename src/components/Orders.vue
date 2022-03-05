@@ -16,6 +16,55 @@
                     <td>{{ order.name }}</td>
                     <td>{{ order.details }}</td>
                     <td>
+                        <!-- Object -->
+                        <div v-if='order.delivered' >
+                            <div class="form-check form-switch" >
+                                <div>
+                                    <input class="form-check-input" type="radio" v-bind='{id: order.name + 0, name: "flexRadioDefault"+index }' disabled />
+                                    <label class="form-check-label" v-bind:for="order.name + 0" >
+                                        Trabajando
+                                    </label>
+                                </div>
+                                <div>
+                                    <input class="form-check-input" type="radio" v-bind='{id: order.name + 1, name: "flexRadioDefault"+index }' disabled />
+                                    <label class="form-check-label" v-bind:for="order.name + 1" >
+                                        Retrasado
+                                    </label>
+                                </div>
+                                <div>
+                                    <input class="form-check-input bg-success" type="radio" v-bind='{id: order.name + 2, name: "flexRadioDefault"+index }' checked disabled />
+                                    <label class="form-check-label" v-bind:for="order.name + 2" >
+                                        Entregado
+                                    </label>
+                                </div>
+                                <span class="fs-6">{{ dateOrder }}</span>
+                            </div>
+                        </div>
+                        <div v-else>
+                            <div class="form-check form-switch">
+                                <div v-for="(value, key, index) of order.estado" :key="index">
+                                    <div v-if='key == "trabajando"'>
+                                        <input class="form-check-input bg-warning" type="radio" v-bind='{id: order.name + index, name: "flexRadioDefault"+index, checked: value ? "checked" : ""}' />
+                                        <label class="form-check-label" v-bind:for="order.name + index" >
+                                            Trabajando
+                                        </label>
+                                    </div>
+                                    <div v-else-if='key == "retrasado"'>
+                                        <input class="form-check-input bg-danger" type="radio" v-bind='{id: order.name + index, name: "flexRadioDefault"+index, checked: value ? "checked" : ""}' />
+                                        <label class="form-check-label" v-bind:for="order.name + index" >
+                                            Retrasado
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <input class="form-check-input bg-success" type="radio" v-bind='{id: order.name + index, name: "flexRadioDefault"+index, checked: value ? "checked" : ""}' />
+                                    <label class="form-check-label" v-bind:for="order.name + index" >
+                                        Entregado
+                                    </label>
+                                </div>
+                            </div>
+                        </div>
+                        <!--
                         <form v-on:submit.prevent=''>
                             <div class="form-check form-switch">
                                 <div>
@@ -37,27 +86,8 @@
                                     </label>
                                 </div>
                             </div>
-                            <!--
-                            <div v-else-if='order.status == "Trabajando"' class="form-check form-switch">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault1" b-bind:checked='[order.status == "Trabajado" ? "true" : "false"]' />
-                                <label class="form-check-label" for="flexRadioDefault1">
-                                    Trabajando
-                                </label>
-                            </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
-                                <label class="form-check-label" for="flexRadioDefault2">
-                                    Trabajando
-                                </label>
-                            </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="radio" name="flexRadioDefault" id="flexRadioDefault2" />
-                                <label class="form-check-label" for="flexRadioDefault2">
-                                    Entregado
-                                </label>
-                            </div>
-                            -->
                         </form>
+                        -->
                     </td>
                     <td>{{ invoiceStatus(order.invoice) }}</td>
                 </tr>
@@ -71,6 +101,11 @@ import { mapState, mapActions, mapMutations } from 'vuex'
 
 export default {
     name: 'Orders',
+    data(){
+        return {
+            dateOrder: 8
+        }
+    },
     created: function(){
         this.getOrders();
     },
@@ -84,6 +119,9 @@ export default {
             if( e ){
                 return '✔'
             }
+        },
+        getDate( evt ){
+            this.dateOrder = 5
         }
     }
 }
