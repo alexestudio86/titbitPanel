@@ -13,7 +13,6 @@ export default {
     mutations: {
         makeChange: async function(rootState, {id, obj} ){
             //this.$store.state.orders.splice(0,this.$store.state.orders.length)
-            console.log(rootState.state)
             const db = getFirestore(app);
             const orderDocRef = doc(db, "orders", id);
             try{
@@ -25,7 +24,8 @@ export default {
     },
     actions: {
         updateOrder: function({ commit }, [evt, id]){
-            const status = evt.currentTarget.getAttribute('data-description');
+            const status = evt;
+            console.log( 'hello', status );
             if( status == 'trabajando'){
                 commit('makeChange', { id, obj: {
                     "estado.trabajando": true,

@@ -1,88 +1,124 @@
 <template>
     <div class="container">
-        <hr />
-        {{ modifiedState }}
-        <hr />
-        <table class="table">
-            <thead>
-                <tr>
-                    <th scope="col">#</th>
-                    <th scope="col">Pedido</th>
-                    <th scope="col">Pedido</th>
-                    <th scope="col">Estatus</th>
-                    <th scope="col">Factura</th>
-                </tr>
-            </thead>
-            <tbody>
-                <tr v-for="(order, idx) of orders" :key="idx">
-                    <th scope="row">{{ idx + 1 }}</th>
-                    <td>{{ order.name }}</td>
-                    <td>{{ order.details }}</td>
-                    <td>
-                        <!-- Object -->
-                        <div v-if='order.delivered'>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="radio" v-bind='{id: order.name.replace(" ", "_") + 0, name: order.name.replace(" ", "_") }' disabled />
-                                <label class="form-check-label" v-bind:for="order.name + 0" >
-                                    Trabajando
-                                </label>
-                            </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input" type="radio" v-bind='{id: order.name.replace(" ", "_") + 1, name: order.name.replace(" ", "_") }' disabled />
-                                <label class="form-check-label" v-bind:for="order.name + 1" >
-                                    Retrasado
-                                </label>
-                            </div>
-                            <div class="form-check form-switch">
-                                <input class="form-check-input bg-success" type="radio" v-bind='{id: order.name.replace(" ", "_") + 2, name: order.name.replace(" ", "_") }' checked disabled />
-                                <label class="form-check-label" v-bind:for="order.name + 2" >
-                                        Entregado
-                                </label>
-                            </div>
-                            <small class="text-lght fst-italic">{{ getDate(order.modified) }}</small>
-                        </div>
-                        <div class="form-check form-switch" v-else>
-                            <div v-for="(val, key, index) of order.estado" :key="index">
-                                <div v-if='key == "trabajando"'>
-                                    <input class='form-check-input' data-description='trabajando' type='radio' v-bind='{id: order.name.replace(" ", "_") + 0, class: val ? "bg-warning" : "", name: order.name.replace(" ", "_"), checked: val ? "checked" : ""}' v-on:click="updateOrder([$event, order.id])" />
-                                    <label class='form-check-label' v-bind:for='order.name.replace(" ", "_") + 0' >
+        <div class="table-responsive">
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th scope="col">#</th>
+                        <th scope="col">Cliente</th>
+                        <th scope="col">Pedido</th>
+                        <th scope="col">Factura</th>
+                        <th scope="col">Estatus</th>
+                        <th scope="col">Entrega</th>
+                        <th scope='col'>Comentarios</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr v-for="(order, idx) of orders" :key="idx">
+                        <th scope="row">{{ idx + 1 }}</th>
+                        <td>{{ order.name }}</td>
+                        <td>{{ order.details }}</td>
+                        <td>{{ invoiceStatus(order.invoice) }}</td>
+                        <td>
+                            <!-- Object -->
+                            <div v-if='order.delivered'>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="radio" v-bind='{id: order.name.replace(" ", "_") + 0, name: order.name.replace(" ", "_") }' disabled />
+                                    <label class="form-check-label" v-bind:for="order.name + 0" >
                                         Trabajando
                                     </label>
                                 </div>
-                                <div v-else-if='key == "retrasado"'>
-                                    <input class='form-check-input' data-description='retrasado' type='radio' v-bind='{id: order.name.replace(" ", "_") + 1, class: val ? "bg-danger" : "", name: order.name.replace(" ", "_"), checked: val ? "checked" : ""}' v-on:click="updateOrder([$event, order.id])" />
-                                    <label class='form-check-label' v-bind:for='order.name.replace(" ", "_") + 1' >
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input" type="radio" v-bind='{id: order.name.replace(" ", "_") + 1, name: order.name.replace(" ", "_") }' disabled />
+                                    <label class="form-check-label" v-bind:for="order.name + 1" >
                                         Retrasado
                                     </label>
                                 </div>
+                                <div class="form-check form-switch">
+                                    <input class="form-check-input bg-success" type="radio" v-bind='{id: order.name.replace(" ", "_") + 2, name: order.name.replace(" ", "_") }' checked disabled />
+                                    <label class="form-check-label" v-bind:for="order.name + 2" >
+                                            Entregado
+                                    </label>
+                                </div>
                             </div>
-                            <div>
-                                <input class='form-check-input' data-description='entregado' type='radio' v-bind='{id: order.name.replace(" ", "_") + 2, name: order.name.replace(" ", "_") }' v-on:click="updateOrder([$event, order.id])" />
-                                <label class='form-check-label' v-bind:for='order.name.replace(" ", "_") + 2' >
-                                    Entregado
-                                </label>
+                            <div class="form-check form-switch" v-else>
+                                <div v-if='order.estado'>
+                                    <div v-if='order.estado.trabajando'>
+                                        <input class='form-check-input bg-warning' data-description='trabajando' type='radio' v-bind='{id: order.name.replace(" ", "_") + 0, name: order.name.replace(" ", "_") }' v-on:click="checkModalConfirmation( [$event, order.id] )" checked/>
+                                        <label class='form-check-label' v-bind:for='order.name.replace(" ", "_") + 0' >
+                                            Trabajando
+                                        </label>
+                                    </div>
+                                    <div v-else>
+                                        <input class='form-check-input' data-description='trabajando' type='radio' v-bind='{id: order.name.replace(" ", "_") + 0, name: order.name.replace(" ", "_") }' v-on:click="checkModalConfirmation( [$event, order.id] )" />
+                                        <label class='form-check-label' v-bind:for='order.name.replace(" ", "_") + 0' >
+                                            Trabajando
+                                        </label>
+                                    </div>
+                                    <div v-if='order.estado.retrasado'>
+                                        <input class='form-check-input bg-danger' data-description='retrasado' type='radio' v-bind='{id: order.name.replace(" ", "_") + 1, name: order.name.replace(" ", "_") }' v-on:click="checkModalConfirmation( [$event, order.id] )" checked />
+                                        <label class='form-check-label' v-bind:for='order.name.replace(" ", "_") + 1' >
+                                            Retrasado
+                                        </label>
+                                    </div>
+                                    <div v-else>
+                                        <input class='form-check-input' data-description='retrasado' type='radio' v-bind='{id: order.name.replace(" ", "_") + 1, name: order.name.replace(" ", "_") }' v-on:click="checkModalConfirmation( [$event, order.id] )" />
+                                        <label class='form-check-label' v-bind:for='order.name.replace(" ", "_") + 1' >
+                                            Retrasado
+                                        </label>
+                                    </div>
+                                </div>
+                                <div>
+                                    <input class='form-check-input' data-description='entregado' type='radio' v-bind='{id: order.name.replace(" ", "_") + 2, name: order.name.replace(" ", "_") }' v-on:click.stop.prevent="checkModalConfirmation( [$event, order.id] )" />
+                                    <label class='form-check-label' v-bind:for='order.name.replace(" ", "_") + 2' >
+                                        Entregado
+                                    </label>
+                                </div>
                             </div>
-                        </div>
-                    </td>
-                    <td>{{ invoiceStatus(order.invoice) }}</td>
-                </tr>
-            </tbody>
-        </table>
+                        </td>
+                        <td>
+                            <div v-if='order.delivered'>
+                                <div>
+                                    <small class="font-italic">{{ getDate(order.modified) }}</small>
+                                </div>
+                                <div>
+                                    <small class="font-weight-bold">{{ getHour(order.modified) }}</small>
+                                </div>
+                            </div>
+                        </td>
+                        <td>
+                            <a v-if='order.comments' tabindex='0' class="btn" role="button" data-bs-toggle="popover" data-bs-placement="left" data-bs-trigger='focus' v-bind='{ "data-Bs-Content": order.comments, title: order.name}' >
+                                <i class="far fa-question-circle"></i>
+                            </a>
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+            <modal-confirmation :arr='arr' />
+        </div>
     </div>
 </template>
 
 <script>
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
+import ModalConfirmation from '@/components/ModalConfirmation.vue'
 
 export default {
     name: 'Orders',
+    components: {
+        ModalConfirmation
+    },
     data(){
         return {
-            dateOrder: null
+            dateOrder: null,
+            arr: []
         }
     },
     created: function(){
         this.readOrders();
+    },
+    updated: function(){
+        this.enablePopovers();
     },
     watch:{
         '$store.getters.modifiedState': function(){
@@ -105,7 +141,33 @@ export default {
             }
         },
         getDate( evt ){
-            return evt.toDate().toDateString()
+            if( evt ){
+                return evt.toDate().toDateString()
+            }
+        },
+        getHour( evt ){
+            if( evt ){
+                return evt.toDate().toLocaleTimeString('es-MX')
+            }
+        },
+        checkModalConfirmation( [evt, id] ){
+            const description = evt.currentTarget.getAttribute('data-description');
+            if( description == 'entregado'){
+                this.arr = [description, id];
+                this.showModalConfirmation();
+            }else{
+                this.updateOrder( [description, id] );
+            }
+        },
+        showModalConfirmation(){
+            let modal = new bootstrap.Modal( document.querySelector('div#modalConfirmation') );
+            modal.show();
+        },
+        enablePopovers(){
+            let popoverTriggerList = [].slice.call(document.querySelectorAll('[data-bs-toggle="popover"]'))
+            let popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
+                return new bootstrap.Popover(popoverTriggerEl)
+            })
         }
     }
 }

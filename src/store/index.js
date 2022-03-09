@@ -11,15 +11,12 @@ import patchOrders from '@/modules/patchOrders';
 
 export default new Vuex.Store({
   state: {
-
   },
   getters: {
   },
   mutations: {
-
   },
   actions: {
-
   },
   modules: {
     getOrders, patchOrders

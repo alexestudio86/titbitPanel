@@ -22,20 +22,44 @@ export default {
     },
     mutations: {
         allOrders( state, orderList ){
+            //state.orders.splice(0, state.orders.length);
             state.orders = orderList;
         }
     },
     actions: {
-        readOrders: async function ({ commit }) {
+        readOrders: async function ({ commit, state }) {
             const db = getFirestore(app);
             try{
                 const queryOrders = query(collection(db, 'orders'), orderBy('date', 'desc'));
                 const orderList = [];
                 const getOrders = await onSnapshot(queryOrders, (querySnapshot) => {
+                    /*
+                    state.orders.splice(0, state.orders.length);
+                    querySnapshot.docChanges().forEach( (change) => {
+                        if(change.type === 'added'){
+                            orderList.push( {id: change.doc.id, ...change.doc.data()} )
+                        }
+                        if(){
+
+                        }
+                    });
+                    commit('allOrders', orderList);
+                    */
+                    
+                    state.orders.splice(0, state.orders.length);
                     querySnapshot.forEach( (doc) => {
                         orderList.push( {id: doc.id, ...doc.data()} )
                     });
+                    commit('allOrders', orderList);
+                    
+                    /*
+                    querySnapshot.docChanges().forEach( (change) => {
+                        if (change.type === 'added'){
+                            orderList.push( {id: change.doc.id, ...change.doc.data()} )
+                        }
+                    });
                     commit('allOrders', orderList)
+                    */
                 });
             }catch(error){
                 console.log(error)
