@@ -28,24 +28,24 @@ export default {
             console.log( 'hello', status );
             if( status == 'trabajando'){
                 commit('makeChange', { id, obj: {
-                    "estado.trabajando": true,
-                    "estado.retrasado": false,
+                    "status.trabajando": true,
+                    "status.retrasado": false,
                     "delivered": false,
                     "modified": serverTimestamp()
                     }
                 })
             }else if( status == 'retrasado'){
                 commit('makeChange', {id, obj: {
-                    "estado.trabajando": false,
-                    "estado.retrasado": true,
+                    "status.trabajando": false,
+                    "status.retrasado": true,
                     "delivered": false,
                     "modified": serverTimestamp()
                     }
                 })
             }else{
                 commit('makeChange', { id, obj: {
-                    "estado.trabajando": false,
-                    "estado.retrasado": false,
+                    "status.trabajando": false,
+                    "status.retrasado": false,
                     "delivered": true,
                     "modified": serverTimestamp()
                     }

@@ -1,6 +1,9 @@
 <template>
     <div class="container">
         <div class="table-responsive">
+            <div v-if='loader'>
+                <PlaceholderOrders />
+            </div>
             <table class="table">
                 <thead>
                     <tr>
@@ -42,8 +45,8 @@
                                 </div>
                             </div>
                             <div class="form-check form-switch" v-else>
-                                <div v-if='order.estado'>
-                                    <div v-if='order.estado.trabajando'>
+                                <div v-if='order.status'>
+                                    <div v-if='order.status.trabajando'>
                                         <input class='form-check-input bg-warning' data-description='trabajando' type='radio' v-bind='{id: order.name.replace(" ", "_") + 0, name: order.name.replace(" ", "_") }' v-on:click="checkModalConfirmation( [$event, order.id] )" checked/>
                                         <label class='form-check-label' v-bind:for='order.name.replace(" ", "_") + 0' >
                                             Trabajando
@@ -55,7 +58,7 @@
                                             Trabajando
                                         </label>
                                     </div>
-                                    <div v-if='order.estado.retrasado'>
+                                    <div v-if='order.status.retrasado'>
                                         <input class='form-check-input bg-danger' data-description='retrasado' type='radio' v-bind='{id: order.name.replace(" ", "_") + 1, name: order.name.replace(" ", "_") }' v-on:click="checkModalConfirmation( [$event, order.id] )" checked />
                                         <label class='form-check-label' v-bind:for='order.name.replace(" ", "_") + 1' >
                                             Retrasado
@@ -101,12 +104,13 @@
 
 <script>
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
+import PlaceholderOrders from '@/components/PlaceholderOrders.vue'
 import ModalConfirmation from '@/components/ModalConfirmation.vue'
 
 export default {
     name: 'Orders',
     components: {
-        ModalConfirmation
+        PlaceholderOrders, ModalConfirmation
     },
     data(){
         return {
@@ -127,7 +131,7 @@ export default {
         }
     },
     computed: {
-        ...mapState('getOrders', ['orders']),
+        ...mapState('getOrders', ['orders', 'loader']),
         ...mapGetters('getOrders',['modifiedState'])
     },
     methods: {

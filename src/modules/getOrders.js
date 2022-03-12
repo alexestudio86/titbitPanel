@@ -10,6 +10,7 @@ export default {
     namespaced: true,
     state: {
         orders: [],
+        loader: null
     },
     getters: {
         modifiedState(state){
@@ -22,15 +23,16 @@ export default {
     },
     mutations: {
         allOrders( state, orderList ){
-            //state.orders.splice(0, state.orders.length);
+            state.loader = false;
             state.orders = orderList;
         }
     },
     actions: {
         readOrders: async function ({ commit, state }) {
             const db = getFirestore(app);
+            state.loader = true;
             try{
-                const queryOrders = query(collection(db, 'orders'), orderBy('date', 'desc'));
+                const queryOrders = query(collection(db, 'orders'), orderBy('created', 'desc'));
                 const orderList = [];
                 const getOrders = await onSnapshot(queryOrders, (querySnapshot) => {
                     /*
