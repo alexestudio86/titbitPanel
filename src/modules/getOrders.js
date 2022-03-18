@@ -1,7 +1,7 @@
 // Import the functions you need from the SDKs you need
 import { initializeApp } from 'firebase/app';
 import firebaseConfig from '../config.js'
-import { getFirestore, collection, query, orderBy, onSnapshot } from 'firebase/firestore';
+import { getFirestore, collection, query, orderBy, where, onSnapshot } from 'firebase/firestore';
 
 // Initialize Firebase
 const app = initializeApp(firebaseConfig);
@@ -31,8 +31,10 @@ export default {
         readOrders: async function ({ commit, state }) {
             const db = getFirestore(app);
             state.loader = true;
+            const dayFiltered = new Date();
+            dayFiltered.setHours(0,0,0,0);
             try{
-                const queryOrders = query(collection(db, 'orders'), orderBy('created', 'desc'));
+                const queryOrders = query(collection(db, 'orders'), where('created', '>=', dayFiltered ), orderBy('created', 'desc'));
                 const orderList = [];
                 const getOrders = await onSnapshot(queryOrders, (querySnapshot) => {
                     /*
