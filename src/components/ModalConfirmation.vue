@@ -30,7 +30,7 @@ export default {
     },
     methods: {
         //...mapMutations('patchOrders', ['makeChange']),
-        ...mapActions('patchOrders', ['updateOrder'])
+        ...mapActions('orders', ['updateOrder'])
     }
 
 }
