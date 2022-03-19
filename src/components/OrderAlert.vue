@@ -1,22 +1,16 @@
 <template>
-    <div aria-labelledby='modalConfirmation' class='modal fade' data-bs-backdrop='static' id='modalConfirmation' tabindex='-1'>
+    <div aria-labelledby='modalOrderAlert' class='modal fade show d-block bg-white bg-opacity-50' data-bs-backdrop='static' id='modalOrderAlert' tabindex='-1'>
         <div class='modal-dialog modal-dialog-centered'>
             <div class="modal-content">
-                <div class="modal-header d-flex justify-content-center">
-                    <h5 class='modal-title text-uppercase'>¿Marcar como entregado?</h5>
-                </div>
-                <div class='modal-body text-center d-flex justify-content-around'>
-                    <button class='btn btn-outline-secondary' data-bs-dismiss='modal' data-bs-target='modalConfirmation' type='button'>Cancelar</button>
-                    <button class='btn btn-outline-danger' data-bs-dismiss='modal' data-ident='0' type='button' v-on:click='updateOrder( arr )'>Confirmar</button>
-                </div>
-                <div class="modal-footer d-flex justify-content-center">
-                    <small>¡Esta acción no se puede deshacer!</small>
-                    <span class='d-none'>&#161;Hecho!</span>
+                <div class="alert alert-success m-0 d-flex justify-content-between align-items-center" role="alert">
+                    <span>¡Nueva Order llegando!</span>
+                    <i class="far fa-bell fa-lg"></i>
                 </div>
             </div>
         </div>
     </div>
 </template>
+
 
 <script>
 export default {

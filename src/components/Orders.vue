@@ -23,7 +23,7 @@
                         <td>{{ order.name }}</td>
                         <!-- Pedido -->
                         <td>
-                            <p class="m-0" v-for="(o, i) of order.details">{{ o }}</p>
+                            <p class="m-0" v-for="(o, i) of order.details" :key="i">{{ o }}</p>
                         </td>
                         <!-- Factura -->
                         <td>{{ invoiceStatus(order.invoice) }}</td>
@@ -105,8 +105,11 @@
                     </tr>
                 </tbody>
             </table>
-            <order-alert />
+            <order-alert v-if="changedDocument" />
             <modal-confirmation :arr='arr' />
+            <audio id="bell" >
+                <source src="../assets/bell.mp3" type="audio/mpeg" />
+            </audio>
         </div>
     </div>
 </template>
@@ -133,22 +136,14 @@ export default {
     },
     updated: function(){
         this.enablePopovers();
-    },
-    watch:{
-        '$store.getters.modifiedState': function(){
-            console.log(this.orders);
-            this.readOrders()
-        }
+        this.playSound();
     },
     computed: {
-        ...mapState('getOrders', ['orders', 'loader']),
-        ...mapGetters('getOrders',['modifiedState'])
+        ...mapState('orders', ['orders', 'loader', 'changedDocument'])
     },
     methods: {
-        ...mapMutations('getOrders', ['allOrders']),
-        ...mapActions('getOrders', ['readOrders']),
-        ...mapMutations('patchOrders', ['makeChange']),
-        ...mapActions('patchOrders', ['updateOrder']),
+        ...mapMutations('orders', ['allOrders', 'makeChange']),
+        ...mapActions('orders', ['readOrders', 'updateOrder']),
         invoiceStatus: function(e){
             if( e ){
                 return '✔'
@@ -182,6 +177,12 @@ export default {
             let popoverList = popoverTriggerList.map(function (popoverTriggerEl) {
                 return new bootstrap.Popover(popoverTriggerEl)
             })
+        },
+        playSound(){
+            if(this.changedDocument){
+                document.getElementById('bell').autoplay = 'true';
+                console.log('Si hay');
+            }
         }
     }
 }

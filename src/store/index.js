@@ -6,8 +6,7 @@ import { createStore } from 'vuex'
 Vue.use(Vuex)
 
 // Modules
-import getOrders from '@/modules/getOrders.js';
-import patchOrders from '@/modules/patchOrders';
+import orders from './modules/orders.js';
 
 export default new Vuex.Store({
   state: {
@@ -19,6 +18,6 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    getOrders, patchOrders
+    orders
   }
 })
