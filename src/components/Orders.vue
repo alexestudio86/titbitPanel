@@ -19,9 +19,15 @@
                 <tbody>
                     <tr v-for="(order, idx) of orders" :key="idx">
                         <th scope="row">{{ idx + 1 }}</th>
+                        <!-- Cliente -->
                         <td>{{ order.name }}</td>
-                        <td>{{ order.details }}</td>
+                        <!-- Pedido -->
+                        <td>
+                            <p class="m-0" v-for="(o, i) of order.details">{{ o }}</p>
+                        </td>
+                        <!-- Factura -->
                         <td>{{ invoiceStatus(order.invoice) }}</td>
+                        <!-- Estatus -->
                         <td>
                             <!-- Object -->
                             <div v-if='order.delivered'>
@@ -79,6 +85,7 @@
                                 </div>
                             </div>
                         </td>
+                        <!-- Entrega -->
                         <td>
                             <div v-if='order.delivered'>
                                 <div>
@@ -89,6 +96,7 @@
                                 </div>
                             </div>
                         </td>
+                        <!-- Comentarios -->
                         <td>
                             <a v-if='order.comments' tabindex='0' class="btn" role="button" data-bs-toggle="popover" data-bs-placement="left" data-bs-trigger='focus' v-bind='{ "data-Bs-Content": order.comments, title: order.name}' >
                                 <i class="far fa-question-circle"></i>
@@ -97,6 +105,7 @@
                     </tr>
                 </tbody>
             </table>
+            <order-alert />
             <modal-confirmation :arr='arr' />
         </div>
     </div>
@@ -106,11 +115,12 @@
 import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import PlaceholderOrders from '@/components/PlaceholderOrders.vue'
 import ModalConfirmation from '@/components/ModalConfirmation.vue'
+import OrderAlert from '@/components/OrderAlert.vue'
 
 export default {
     name: 'Orders',
     components: {
-        PlaceholderOrders, ModalConfirmation
+        PlaceholderOrders, ModalConfirmation, OrderAlert
     },
     data(){
         return {
