@@ -4,7 +4,7 @@
             <div v-if='loader'>
                 <PlaceholderOrders />
             </div>
-            <table class="table">
+            <table class="table" v-if="!loader">
                 <thead>
                     <tr>
                         <th scope="col">#</th>
