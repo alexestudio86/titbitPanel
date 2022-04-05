@@ -10,7 +10,6 @@
                         <th scope="col">#</th>
                         <th scope="col">Cliente</th>
                         <th scope="col">Pedido</th>
-                        <th scope="col">Factura</th>
                         <th scope="col">Estatus</th>
                         <th scope="col">Entrega</th>
                         <th scope='col'>Comentarios</th>
@@ -25,8 +24,6 @@
                         <td>
                             <p class="m-0" v-for="(o, i) of order.details" :key="i">{{ o }}</p>
                         </td>
-                        <!-- Factura -->
-                        <td>{{ invoiceStatus(order.invoice) }}</td>
                         <!-- Estatus -->
                         <td>
                             <!-- Object -->
