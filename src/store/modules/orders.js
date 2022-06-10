@@ -45,17 +45,17 @@ export default {
 
                     querySnapshot.docChanges().forEach( (change) => {
                         if(change.type === 'added'){
-                            console.log('agregado');
+                            //console.log('agregado');
                             state.changedDocument = true;
                             setTimeout( () => {
                                 state.changedDocument = false;
                             }, 1000)
                         }
                         if(change.type === 'modified'){
-                            console.log('modificado');
+                            //console.log('modificado');
                         }
                         if(change.type === 'removed'){
-                            console.log('borrado');
+                            //console.log('borrado');
                         }
                     });
 

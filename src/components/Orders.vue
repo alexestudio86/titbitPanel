@@ -178,7 +178,7 @@ export default {
         playSound(){
             if(this.changedDocument){
                 document.getElementById('bell').autoplay = 'true';
-                console.log('Si hay');
+                //console.log('Nueva orden llegando');
             }
         }
     }

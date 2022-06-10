@@ -1,19 +1,33 @@
 <template>
   <div class="home">
     <Navbar />
-    <Orders />
+    <div v-if="loginStatus">
+      <Orders />
+    </div>
+    <div v-else>
+      <LoginModal />
+    </div>
   </div>
 </template>
 
 <script>
-// @ is an alias to /src
-import Navbar from '@/components/Navbar.vue'
-import Orders from '@/components/Orders.vue'
+
+import Navbar from '@/components/Navbar.vue';
+import Orders from '@/components/Orders.vue';
+import LoginModal from '@/components/LoginModal.vue';
+import { mapState } from 'vuex';
+
 
 export default {
+
   name: 'HomeView',
   components: {
-    Navbar, Orders
+    Navbar, Orders, LoginModal
+  },
+  computed: {
+    ...mapState('login', ['loginStatus'])
   }
+
 }
+
 </script>

@@ -7,6 +7,7 @@ Vue.use(Vuex)
 
 // Modules
 import orders from './modules/orders.js';
+import login from './modules/login.js';
 
 export default new Vuex.Store({
   state: {
@@ -18,6 +19,6 @@ export default new Vuex.Store({
   actions: {
   },
   modules: {
-    orders
+    orders, login
   }
 })
