@@ -16,7 +16,7 @@
 
         name: 'LoginExit',
         methods: {
-            ...mapActions('login', ['signOut']),
+            ...mapActions('login', ['signOut'])
         }
 
     }
